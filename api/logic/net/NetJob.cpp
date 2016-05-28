@@ -16,7 +16,7 @@
 #include "NetJob.h"
 #include "MD5EtagDownload.h"
 #include "ByteArrayDownload.h"
-#include "CacheDownload.h"
+#include "Download.h"
 
 #include <QDebug>
 

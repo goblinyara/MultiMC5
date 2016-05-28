@@ -1,5 +1,5 @@
 #include "Library.h"
-#include <net/CacheDownload.h>
+#include <net/Download.h>
 #include <minecraft/forge/ForgeXzDownload.h>
 #include <Env.h>
 #include <FileSystem.h>
@@ -95,7 +95,7 @@ QList<NetActionPtr> Library::getDownloads(OpSys system, HttpMetaCache * cache, Q
 		}
 		else
 		{
-			out.append(CacheDownload::make(dl, entry));
+			out.append(Download::make(dl, entry));
 		}
 		return true;
 	};

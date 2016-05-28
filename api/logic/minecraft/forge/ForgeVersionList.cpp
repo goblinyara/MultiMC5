@@ -131,9 +131,9 @@ void ForgeListLoadTask::executeTask()
 	forgeListEntry->setStale(true);
 	gradleForgeListEntry->setStale(true);
 
-	job->addNetAction(listDownload = CacheDownload::make(QUrl(URLConstants::FORGE_LEGACY_URL),
+	job->addNetAction(listDownload = Download::make(QUrl(URLConstants::FORGE_LEGACY_URL),
 														 forgeListEntry));
-	job->addNetAction(gradleListDownload = CacheDownload::make(
+	job->addNetAction(gradleListDownload = Download::make(
 						  QUrl(URLConstants::FORGE_GRADLE_URL), gradleForgeListEntry));
 
 	connect(listDownload.get(), SIGNAL(failed(int)), SLOT(listFailed()));
@@ -155,7 +155,7 @@ bool ForgeListLoadTask::parseForgeList(QList<BaseVersionPtr> &out)
 	QByteArray data;
 	{
 		auto dlJob = listDownload;
-		auto filename = std::dynamic_pointer_cast<CacheDownload>(dlJob)->getTargetFilepath();
+		auto filename = std::dynamic_pointer_cast<Download>(dlJob)->getTargetFilepath();
 		QFile listFile(filename);
 		if (!listFile.open(QIODevice::ReadOnly))
 		{
@@ -267,7 +267,7 @@ bool ForgeListLoadTask::parseForgeGradleList(QList<BaseVersionPtr> &out)
 	QByteArray data;
 	{
 		auto dlJob = gradleListDownload;
-		auto filename = std::dynamic_pointer_cast<CacheDownload>(dlJob)->getTargetFilepath();
+		auto filename = std::dynamic_pointer_cast<Download>(dlJob)->getTargetFilepath();
 		QFile listFile(filename);
 		if (!listFile.open(QIODevice::ReadOnly))
 		{

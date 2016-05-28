@@ -81,8 +81,8 @@ protected:
 	NetJobPtr listJob;
 	ForgeVersionList *m_list;
 
-	CacheDownloadPtr listDownload;
-	CacheDownloadPtr gradleListDownload;
+	DownloadPtr listDownload;
+	DownloadPtr gradleListDownload;
 
 private:
 	bool parseForgeList(QList<BaseVersionPtr> &out);

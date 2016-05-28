@@ -1,6 +1,6 @@
 #include "TranslationDownloader.h"
 #include "net/NetJob.h"
-#include "net/CacheDownload.h"
+#include "net/Download.h"
 #include "net/URLConstants.h"
 #include "Env.h"
 #include <QDebug>
@@ -29,7 +29,7 @@ void TranslationDownloader::indexRecieved()
 		{
 			MetaEntryPtr entry = ENV.metacache()->resolveEntry("translations", "mmc_" + line);
 			entry->setStale(true);
-			CacheDownloadPtr dl = CacheDownload::make(
+			DownloadPtr dl = Download::make(
 				QUrl(URLConstants::TRANSLATIONS_BASE_URL + line),
 				entry);
 			m_dl_job->addNetAction(dl);

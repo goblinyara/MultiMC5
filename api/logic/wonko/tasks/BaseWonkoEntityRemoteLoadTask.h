@@ -43,7 +43,7 @@ private:
 	void executeTask() override;
 
 	BaseWonkoEntity *m_entity;
-	std::shared_ptr<class CacheDownload> m_dl;
+	std::shared_ptr<class Download> m_dl;
 };
 
 class WonkoIndexRemoteLoadTask : public BaseWonkoEntityRemoteLoadTask

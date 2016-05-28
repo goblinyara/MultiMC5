@@ -59,7 +59,7 @@
 #include <SkinUtils.h>
 #include <net/URLConstants.h>
 #include <net/NetJob.h>
-#include <net/CacheDownload.h>
+#include <net/Download.h>
 #include <news/NewsChecker.h>
 #include <notifications/NotificationChecker.h>
 #include <tools/BaseProfiler.h>
@@ -519,7 +519,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
 
 	auto accounts = MMC->accounts();
 
-	QList<CacheDownloadPtr> skin_dls;
+	QList<DownloadPtr> skin_dls;
 	for (int i = 0; i < accounts->count(); i++)
 	{
 		auto account = accounts->at(i);
@@ -531,7 +531,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
 		for (auto profile : account->profiles())
 		{
 			auto meta = Env::getInstance().metacache()->resolveEntry("skins", profile.id + ".png");
-			auto action = CacheDownload::make(QUrl("https://" + URLConstants::SKINS_BASE + profile.id + ".png"), meta);
+			auto action = Download::make(QUrl("https://" + URLConstants::SKINS_BASE + profile.id + ".png"), meta);
 			skin_dls.append(action);
 			meta->setStale(true);
 		}
@@ -1045,7 +1045,7 @@ InstancePtr MainWindow::instanceFromZipPack(QString instName, QString instGroup,
 		const QString path = url.host() + '/' + url.path();
 		auto entry = ENV.metacache()->resolveEntry("general", path);
 		entry->setStale(true);
-		CacheDownloadPtr dl = CacheDownload::make(url, entry);
+		DownloadPtr dl = Download::make(url, entry);
 		NetJob job(tr("Modpack download"));
 		job.addNetAction(dl);
 

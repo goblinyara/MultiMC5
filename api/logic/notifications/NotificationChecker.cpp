@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #include "Env.h"
-#include "net/CacheDownload.h"
+#include "net/Download.h"
 
 
 NotificationChecker::NotificationChecker(QObject *parent)
@@ -55,8 +55,8 @@ void NotificationChecker::checkForNotifications()
 	m_checkJob.reset(new NetJob("Checking for notifications"));
 	auto entry = ENV.metacache()->resolveEntry("root", "notifications.json");
 	entry->setStale(true);
-	m_checkJob->addNetAction(m_download = CacheDownload::make(m_notificationsUrl, entry));
-	connect(m_download.get(), &CacheDownload::succeeded, this,
+	m_checkJob->addNetAction(m_download = Download::make(m_notificationsUrl, entry));
+	connect(m_download.get(), &Download::succeeded, this,
 			&NotificationChecker::downloadSucceeded);
 	m_checkJob->start();
 }

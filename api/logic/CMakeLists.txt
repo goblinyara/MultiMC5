@@ -82,13 +82,17 @@ set(PATHMATCHER_SOURCES
 
 set(NET_SOURCES
 	# network stuffs
+	net/graph/ChecksumNode.h
+	net/graph/DataNode.h
+	net/graph/MetaCacheDataSink.cpp
+	net/graph/MetaCacheDataSink.h
 	net/NetAction.h
 	net/MD5EtagDownload.h
 	net/MD5EtagDownload.cpp
 	net/ByteArrayDownload.h
 	net/ByteArrayDownload.cpp
-	net/CacheDownload.h
-	net/CacheDownload.cpp
+	net/Download.h
+	net/Download.cpp
 	net/NetJob.h
 	net/NetJob.cpp
 	net/HttpMetaCache.h

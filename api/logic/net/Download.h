@@ -17,47 +17,41 @@
 
 #include "NetAction.h"
 #include "HttpMetaCache.h"
-#include <QCryptographicHash>
-#include <QSaveFile>
+#include "graph/DataNode.h"
 
 #include "multimc_logic_export.h"
 
-typedef std::shared_ptr<class CacheDownload> CacheDownloadPtr;
-class MULTIMC_LOGIC_EXPORT CacheDownload : public NetAction
+typedef std::shared_ptr<class Download> DownloadPtr;
+class MULTIMC_LOGIC_EXPORT Download : public NetAction
 {
 	Q_OBJECT
-private:
-	MetaEntryPtr m_entry;
-	/// if saving to file, use the one specified in this string
-	QString m_target_path;
-
-	/// this is the output file, if any
-	std::unique_ptr<QSaveFile> m_output_file;
-
-	/// the hash-as-you-download
-	QCryptographicHash md5sum;
-
-	bool wroteAnyData = false;
-
-public:
-	explicit CacheDownload(QUrl url, MetaEntryPtr entry);
-	static CacheDownloadPtr make(QUrl url, MetaEntryPtr entry)
+public: /* con/des */
+	explicit Download(QUrl url, MetaEntryPtr entry);
+	virtual ~Download(){};
+	static DownloadPtr make(QUrl url, MetaEntryPtr entry)
 	{
-		return CacheDownloadPtr(new CacheDownload(url, entry));
+		return std::make_shared<Download>(url, entry);
 	}
-	virtual ~CacheDownload(){};
+
+public: /* methods */
 	QString getTargetFilepath()
 	{
 		return m_target_path;
 	}
-protected
-slots:
+
+private: /* methods */
+	bool handleRedirect();
+
+protected slots:
 	virtual void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 	virtual void downloadError(QNetworkReply::NetworkError error);
 	virtual void downloadFinished();
 	virtual void downloadReadyRead();
 
-public
-slots:
+public slots:
 	virtual void start();
+
+private: /* data */
+	QString m_target_path;
+	std::unique_ptr<class DataNode> m_graph;
 };
