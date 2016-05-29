@@ -96,7 +96,7 @@ void OneSixUpdate::assetIndexStart()
 	auto metacache = ENV.metacache();
 	auto entry = metacache->resolveEntry("asset_indexes", localPath);
 	entry->setStale(true);
-	job->addNetAction(Download::make(indexUrl, entry));
+	job->addNetAction(Download::makeCached(indexUrl, entry));
 	jarlibDownloadJob.reset(job);
 
 	connect(jarlibDownloadJob.get(), SIGNAL(succeeded()), SLOT(assetIndexFinished()));
@@ -180,7 +180,7 @@ void OneSixUpdate::jarlibStart()
 
 		auto metacache = ENV.metacache();
 		auto entry = metacache->resolveEntry("versions", localPath);
-		job->addNetAction(Download::make(QUrl(urlstr), entry));
+		job->addNetAction(Download::makeCached(QUrl(urlstr), entry));
 		jarlibDownloadJob.reset(job);
 	}
 
@@ -293,7 +293,7 @@ void OneSixUpdate::fmllibsStart()
 		auto entry = metacache->resolveEntry("fmllibs", lib.filename);
 		QString urlString = lib.ours ? URLConstants::FMLLIBS_OUR_BASE_URL + lib.filename
 									 : URLConstants::FMLLIBS_FORGE_BASE_URL + lib.filename;
-		dljob->addNetAction(Download::make(QUrl(urlString), entry));
+		dljob->addNetAction(Download::makeCached(QUrl(urlString), entry));
 	}
 
 	connect(dljob, SIGNAL(succeeded()), SLOT(fmllibsFinished()));

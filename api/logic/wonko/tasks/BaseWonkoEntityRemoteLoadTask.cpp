@@ -37,7 +37,7 @@ void BaseWonkoEntityRemoteLoadTask::executeTask()
 
 	auto entry = ENV.metacache()->resolveEntry("wonko", url().toString());
 	entry->setStale(true);
-	m_dl = Download::make(url(), entry);
+	m_dl = Download::makeCached(url(), entry);
 	job->addNetAction(m_dl);
 	connect(job, &NetJob::failed, this, &BaseWonkoEntityRemoteLoadTask::emitFailed);
 	connect(job, &NetJob::succeeded, this, &BaseWonkoEntityRemoteLoadTask::networkFinished);

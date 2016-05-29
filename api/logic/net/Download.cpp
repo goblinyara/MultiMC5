@@ -23,16 +23,59 @@
 #include "graph/ChecksumNode.h"
 #include "graph/MetaCacheDataSink.h"
 
-Download::Download(QUrl url, MetaEntryPtr entry)
-	: NetAction()
+Download::Download():NetAction()
 {
-	m_url = url;
+	m_status = Job_NotStarted;
+}
+
+DownloadPtr Download::makeCached(QUrl url, MetaEntryPtr entry)
+{
+	Download * dl = new Download();
+	dl->m_url = url;
 	auto md5Node = new ChecksumNode(QCryptographicHash::Md5);
 	auto cachedNode = new MetaCacheDataSink(entry, md5Node);
 	md5Node->setNext(cachedNode);
-	m_graph.reset(md5Node);
-	m_target_path = entry->getFullPath();
-	m_status = Job_NotStarted;
+	dl->m_graph.reset(md5Node);
+	dl->m_target_path = entry->getFullPath();
+	return std::shared_ptr<Download>(dl);
+}
+
+DownloadPtr Download::makeByteArray(QUrl url, QByteArray *output)
+{
+	class ByteArraySink : public DataNode
+	{
+	public:
+		ByteArraySink(QByteArray *output):ba(output) {};
+		virtual ~ByteArraySink() {}
+	public:
+		JobStatus init(QNetworkRequest &) override
+		{
+			ba->clear();
+			return Job_InProgress;
+		};
+		JobStatus write(QByteArray & data) override
+		{
+			ba->append(data);
+			return Job_InProgress;
+		}
+		JobStatus abort() override
+		{
+			ba->clear();
+			return Job_Failed;
+		}
+		JobStatus finalize(QNetworkReply &) override
+		{
+			return Job_Finished;
+		}
+
+	private:
+		QByteArray * ba;
+	};
+	Download * dl = new Download();
+	dl->m_url = url;
+	auto sink = new ByteArraySink(output);
+	dl->m_graph.reset(sink);
+	return std::shared_ptr<Download>(dl);
 }
 
 void Download::start()

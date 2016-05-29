@@ -95,7 +95,7 @@ QList<NetActionPtr> Library::getDownloads(OpSys system, HttpMetaCache * cache, Q
 		}
 		else
 		{
-			out.append(Download::make(dl, entry));
+			out.append(Download::makeCached(dl, entry));
 		}
 		return true;
 	};

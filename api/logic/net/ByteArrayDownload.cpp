@@ -27,7 +27,7 @@ void ByteArrayDownload::start()
 {
 	qDebug() << "Downloading " << m_url.toString();
 	QNetworkRequest request(m_url);
-	request.setHeader(QNetworkRequest::UserAgentHeader, "MultiMC/5.0 (Uncached)");
+	request.setHeader(QNetworkRequest::UserAgentHeader, "MultiMC/5.0");
 	auto worker = ENV.qnam();
 	QNetworkReply *rep = worker->get(request);
 
@@ -85,7 +85,6 @@ void ByteArrayDownload::downloadFinished()
 		// nothing went wrong...
 		m_status = Job_Finished;
 		m_data = m_reply->readAll();
-		m_content_type = m_reply->header(QNetworkRequest::ContentTypeHeader).toString();
 		m_reply.reset();
 		emit succeeded(m_index_within_job);
 		return;

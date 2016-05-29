@@ -13,19 +13,7 @@ public: /* con/des */
 public: /* methods */
 	JobStatus init(QNetworkRequest & request) override;
 
-	JobStatus write(QByteArray & data) override
-	{
-		if (m_output_file->write(data) != data.size())
-		{
-			qCritical() << "Failed writing into " + m_entry->getFullPath();
-			m_output_file->cancelWriting();
-			m_output_file.reset();
-			wroteAnyData = false;
-			return Job_Failed;
-		}
-		wroteAnyData = true;
-		return Job_InProgress;
-	}
+	JobStatus write(QByteArray & data) override;
 
 	JobStatus abort() override;
 

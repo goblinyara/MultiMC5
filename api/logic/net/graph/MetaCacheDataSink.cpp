@@ -81,3 +81,17 @@ JobStatus MetaCacheDataSink::abort()
 	m_output_file->cancelWriting();
 	return Job_Failed;
 }
+
+JobStatus MetaCacheDataSink::write(QByteArray& data)
+{
+	if (m_output_file->write(data) != data.size())
+	{
+		qCritical() << "Failed writing into " + m_entry->getFullPath();
+		m_output_file->cancelWriting();
+		m_output_file.reset();
+		wroteAnyData = false;
+		return Job_Failed;
+	}
+	wroteAnyData = true;
+	return Job_InProgress;
+}

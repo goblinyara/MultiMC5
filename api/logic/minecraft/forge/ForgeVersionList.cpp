@@ -131,9 +131,9 @@ void ForgeListLoadTask::executeTask()
 	forgeListEntry->setStale(true);
 	gradleForgeListEntry->setStale(true);
 
-	job->addNetAction(listDownload = Download::make(QUrl(URLConstants::FORGE_LEGACY_URL),
+	job->addNetAction(listDownload = Download::makeCached(QUrl(URLConstants::FORGE_LEGACY_URL),
 														 forgeListEntry));
-	job->addNetAction(gradleListDownload = Download::make(
+	job->addNetAction(gradleListDownload = Download::makeCached(
 						  QUrl(URLConstants::FORGE_GRADLE_URL), gradleForgeListEntry));
 
 	connect(listDownload.get(), SIGNAL(failed(int)), SLOT(listFailed()));

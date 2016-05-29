@@ -29,7 +29,7 @@ void TranslationDownloader::indexRecieved()
 		{
 			MetaEntryPtr entry = ENV.metacache()->resolveEntry("translations", "mmc_" + line);
 			entry->setStale(true);
-			DownloadPtr dl = Download::make(
+			DownloadPtr dl = Download::makeCached(
 				QUrl(URLConstants::TRANSLATIONS_BASE_URL + line),
 				entry);
 			m_dl_job->addNetAction(dl);

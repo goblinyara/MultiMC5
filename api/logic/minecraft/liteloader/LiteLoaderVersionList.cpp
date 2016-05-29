@@ -146,8 +146,7 @@ void LLListLoadTask::executeTask()
 	// verify by poking the server.
 	liteloaderEntry->setStale(true);
 
-	job->addNetAction(listDownload = Download::make(QUrl(URLConstants::LITELOADER_URL),
-														 liteloaderEntry));
+	job->addNetAction(listDownload = Download::makeCached(QUrl(URLConstants::LITELOADER_URL), liteloaderEntry));
 
 	connect(listDownload.get(), SIGNAL(failed(int)), SLOT(listFailed()));
 

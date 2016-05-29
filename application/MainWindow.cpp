@@ -531,7 +531,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
 		for (auto profile : account->profiles())
 		{
 			auto meta = Env::getInstance().metacache()->resolveEntry("skins", profile.id + ".png");
-			auto action = Download::make(QUrl("https://" + URLConstants::SKINS_BASE + profile.id + ".png"), meta);
+			auto action = Download::makeCached(QUrl("https://" + URLConstants::SKINS_BASE + profile.id + ".png"), meta);
 			skin_dls.append(action);
 			meta->setStale(true);
 		}
@@ -1045,7 +1045,7 @@ InstancePtr MainWindow::instanceFromZipPack(QString instName, QString instGroup,
 		const QString path = url.host() + '/' + url.path();
 		auto entry = ENV.metacache()->resolveEntry("general", path);
 		entry->setStale(true);
-		DownloadPtr dl = Download::make(url, entry);
+		DownloadPtr dl = Download::makeCached(url, entry);
 		NetJob job(tr("Modpack download"));
 		job.addNetAction(dl);
 

@@ -25,13 +25,12 @@ typedef std::shared_ptr<class Download> DownloadPtr;
 class MULTIMC_LOGIC_EXPORT Download : public NetAction
 {
 	Q_OBJECT
-public: /* con/des */
-	explicit Download(QUrl url, MetaEntryPtr entry);
+protected: /* con/des */
+	explicit Download();
+public:
 	virtual ~Download(){};
-	static DownloadPtr make(QUrl url, MetaEntryPtr entry)
-	{
-		return std::make_shared<Download>(url, entry);
-	}
+	static DownloadPtr makeCached(QUrl url, MetaEntryPtr entry);
+	static DownloadPtr makeByteArray(QUrl url, QByteArray *output);
 
 public: /* methods */
 	QString getTargetFilepath()
@@ -52,6 +51,7 @@ public slots:
 	virtual void start();
 
 private: /* data */
+	// FIXME: remove this, it has no business being here.
 	QString m_target_path;
 	std::unique_ptr<class DataNode> m_graph;
 };

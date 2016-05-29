@@ -72,7 +72,7 @@ void MD5EtagDownload::start()
 	if(!m_expected_md5.isEmpty())
 		qDebug() << "Expecting " << m_expected_md5;
 
-	request.setHeader(QNetworkRequest::UserAgentHeader, "MultiMC/5.0 (Uncached)");
+	request.setHeader(QNetworkRequest::UserAgentHeader, "MultiMC/5.0");
 
 	// Go ahead and try to open the file.
 	// If we don't do this, empty files won't be created, which breaks the updater.
