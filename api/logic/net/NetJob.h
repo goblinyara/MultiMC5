@@ -16,7 +16,6 @@
 #pragma once
 #include <QtNetwork>
 #include "NetAction.h"
-#include "ByteArrayDownload.h"
 #include "MD5EtagDownload.h"
 #include "Download.h"
 #include "HttpMetaCache.h"

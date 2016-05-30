@@ -89,8 +89,6 @@ set(NET_SOURCES
 	net/NetAction.h
 	net/MD5EtagDownload.h
 	net/MD5EtagDownload.cpp
-	net/ByteArrayDownload.h
-	net/ByteArrayDownload.cpp
 	net/Download.h
 	net/Download.cpp
 	net/NetJob.h
